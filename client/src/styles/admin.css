@@ -1,0 +1,24 @@
+/* Admin.css */
+
+.doctor-card {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+}
+
+.doctor-name {
+    margin-bottom: 5px;
+}
+
+.doctor-contact {
+    margin-bottom: 10px;
+}
+
+.confirm-button {
+    background-color: green;
+    margin-right: 10px;
+}
+
+.reject-button {
+    background-color: red;
+}
