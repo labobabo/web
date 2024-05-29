@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { $authHost, $host } from "../http/index";
-
+import { $authHost } from "../http/index";
+import { Card, Container, ListGroup } from "react-bootstrap";
+import "../styles/DocRec.css";
 
 const DoctorReceptions = () => {
     const [receptions, setReceptions] = useState([]);
@@ -19,15 +20,19 @@ const DoctorReceptions = () => {
     }, []);
 
     return (
-        <div>
-            <h1>Записи к врачу</h1>
-            <ul>
-                {receptions.map(reception => (
-                    <li key={reception.id}>{reception.details}</li>
-                    // Предполагается, что объект reception имеет свойства 'id' и 'details'
-                ))}
-            </ul>
-        </div>
+        <Container className="container-custom">
+            <Card className="card-custom">
+                <Card.Header className="form-title">Записи к врачу</Card.Header>
+                <ListGroup variant="flush">
+                    {receptions.map(reception => (
+                        <ListGroup.Item key={reception.id}>
+                            {reception.details}
+                            {/* Предполагается, что объект reception имеет свойства 'id' и 'details' */}
+                        </ListGroup.Item>
+                    ))}
+                </ListGroup>
+            </Card>
+        </Container>
     );
 };
 

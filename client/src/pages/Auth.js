@@ -1,271 +1,298 @@
-import React, { useContext, useState } from "react";
-import { Button, Card, Container, Form, Row } from "react-bootstrap";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { Button, Card, Container, Form } from "react-bootstrap";
+import { NavLink, useNavigate } from "react-router-dom";
+import InputMask from "react-input-mask";
+import { AddressSuggestions } from 'react-dadata';
+import "react-dadata/dist/react-dadata.css";
+import "../styles/Auth.css"; // Import the custom CSS
 
-import { REGISTRATION_ROUTE, LOGIN_ROUTE, HOME_ROUTE, DOCTORREGISTRATION_ROUTE } from "../utils/consts";
-import { registration, login, Role, doctorregistration } from "../http/UserAPI";
-import { observer } from "mobx-react-lite";
 import { Context } from "../index";
+import { registration, login, doctorregistration } from "../http/UserAPI";
+import { observer } from "mobx-react-lite";
+import { HOME_ROUTE, REGISTRATION_ROUTE, LOGIN_ROUTE } from "../utils/consts";
 
 const Auth = observer(() => {
-    const { user } = useContext(Context);
-    const { admin } = useContext(Context);
-    const { doctor } = useContext(Context);
-    const location = useLocation();
+    const { user, admin, doctor } = useContext(Context);
     const navigate = useNavigate();
+
+    const [isLogin, setIsLogin] = useState(true);
+    const [userType, setUserType] = useState(null); // null, 'user', 'doctor'
+    const [step, setStep] = useState(1);
+    const [specialities, setSpecialities] = useState([]);
+    const [registrationSuccess, setRegistrationSuccess] = useState(false);
+
     const [loginIdentifier, setLoginIdentifier] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
-    const [registrationIdentifier, setRegistrationIdentifier] = useState("");
-    const [registrationPassword, setRegistrationPassword] = useState("");
+
+    const [firstName, setFirstName] = useState("");
+    const [secondName, setSecondName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [regLogin, setRegLogin] = useState("");
+    const [regPassword, setRegPassword] = useState("");
     const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [birthdate, setBirthdate] = useState("");
+    const [address, setAddress] = useState("");
+    const [snils, setSnils] = useState("");
+    const [polis, setPolis] = useState("");
+    const [age, setAge] = useState("");
+    const [passport, setPassport] = useState("");
+    const [specialityId, setSpecialityId] = useState("");
 
+    useEffect(() => {
+        if (userType === 'doctor') {
+            fetch("http://185.250.46.135:8080/api/v1/auth/getSpecialities")
+                .then(response => response.json())
+                .then(data => setSpecialities(data))
+                .catch(error => console.error('Error fetching specialities:', error));
+        }
+    }, [userType]);
 
+    const handleNext = () => setStep(step + 1);
+    const handleBack = () => setStep(step - 1);
 
-    const [docfirstName, setDocFirstname] = useState("");
-
-    const [docsecondName, setDocsecondName] = useState("");
-
-    const [doclastName, setDoclastName] = useState("");
-
-    const [docLogin, setDocLogin] = useState("");
-
-    const [docPassword, setDocPassword] = useState("");
-
-    const [docEmail, setDocEmail] = useState("");
-
-    const [docphoneNumber, setDocphoneNumber] = useState("");
-
-    const [docBirthdate, setDocBirthdate] = useState("");
-
-    const [docAddress, setDocAddress] = useState("");
-
-    const [docSnils, setDocSnils] = useState("");
-
-    const [docPolis, setDocPolis] = useState("");
-
-    const [docAge, setDocAge] = useState("");
-
-    const [docPassport, setDocPassport] = useState("");
-
-    const [docSpecialityId, setDocSpecialityId] = useState("");
-
-
-
-
-    const isLogin = location.pathname === LOGIN_ROUTE;
-    const [isDoctorRegistration, setIsDoctorRegistration] = useState(false);
-
-    const click = async () => {
+    const handleRegistration = async () => {
         try {
             let data;
-            if (isLogin) {
-                data = await login(loginIdentifier, loginPassword);
-                navigate(HOME_ROUTE);
-                 window.location.reload();//не трогать иначе все сломается 
+            if (userType === 'doctor') {
+                data = await doctorregistration(
+                    firstName, secondName, lastName, regLogin, regPassword, email,
+                    phoneNumber, birthdate, address, passport, age, specialityId
+                );
             } else {
-                if (isDoctorRegistration) {
-                    // Регистрация врача
-                    data = await doctorregistration(docfirstName, docsecondName, doclastName,docLogin, docPassword, docEmail, docphoneNumber, docBirthdate, docAddress, docSnils, docPolis, docPassport,  docAge, docSpecialityId);
-                } else {
-                    // Обычная регистрация
-                    data = await registration(registrationIdentifier, registrationPassword, email);
-                }
+                data = await registration(
+                    firstName, secondName, lastName, regLogin, regPassword, email,
+                    phoneNumber, birthdate, address, snils, polis, passport, age
+                );
             }
-
-          
-
-            if (Role === "ADMIN") {
-                admin.setAdmin(admin);
-                admin.setIsAuth(true);
-                console.log("eto admin")
-            } else if (Role === "USER") {
-                user.setUser(user);
-                user.setIsAuth(true);
-                console.log("eto user")
-            } else if (Role === "DOCTOR") {
-                doctor.setDoctor(doctor);
-                doctor.setIsAuth(true);
-                console.log("eto doc")
-            }
-
+            setRegistrationSuccess(true);  // Устанавливаем состояние успешной регистрации
+            setTimeout(() => {
+                navigate(LOGIN_ROUTE);  // Перенаправление на страницу входа через 2 секунды
+                window.location.reload();  // Обновление страницы после перенаправления
+            }, 2000);
         } catch (error) {
             alert(error);
         }
     };
 
+    const handleLogin = async () => {
+        try {
+            await login(loginIdentifier, loginPassword);
+            navigate(HOME_ROUTE);
+            window.location.reload();
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    const renderLogin = () => (
+        <Form className="d-flex flex-column">
+            <Form.Control
+                className="form-control-custom"
+                placeholder="Введите login..."
+                value={loginIdentifier}
+                onChange={(e) => setLoginIdentifier(e.target.value)}
+            />
+            <Form.Control
+                className="form-control-custom"
+                type="password"
+                placeholder="Введите ваш пароль..."
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+            />
+            <Button className="mt-3 button-custom" variant="outline-success" onClick={handleLogin}>
+                Войти
+            </Button>
+            <NavLink className="mt-3 registration-link" to={REGISTRATION_ROUTE} onClick={() => setIsLogin(false)}>
+                Зарегистрируйтесь!
+            </NavLink>
+        </Form>
+    );
+
+    const renderStepContent = () => {
+        switch (step) {
+            case 1:
+                return (
+                    <>
+                        <Form.Control
+                            className="form-control-custom"
+                            placeholder="Фамилия"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                        />
+                        <Form.Control
+                            className="form-control-custom"
+                            placeholder="Имя"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                        />
+                        <Form.Control
+                            className="form-control-custom"
+                            placeholder="Отчество"
+                            value={secondName}
+                            onChange={(e) => setSecondName(e.target.value)}
+                        />
+                        <Form.Control
+                            className="form-control-custom"
+                            placeholder="Login"
+                            value={regLogin}
+                            onChange={(e) => setRegLogin(e.target.value)}
+                        />
+                        <Form.Control
+                            className="form-control-custom"
+                            type="password"
+                            placeholder="Password"
+                            value={regPassword}
+                            onChange={(e) => setRegPassword(e.target.value)}
+                        />
+                        <Button className="mt-3 button-custom" variant="outline-primary" onClick={handleNext}>
+                            Далее
+                        </Button>
+                        <Button className="mt-3 button-custom" variant="outline-secondary" onClick={() => setIsLogin(true)}>
+                            Войти
+                        </Button>
+                    </>
+                );
+            case 2:
+                return (
+                    <>
+                        <Form.Control
+                            className="form-control-custom"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <InputMask
+                            mask="+7-999-999-99-99"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        >
+                            {() => <Form.Control className="form-control-custom" placeholder="Номер телефона" />}
+                        </InputMask>
+                        <InputMask
+                            mask="99.99.9999"
+                            value={birthdate}
+                            onChange={(e) => setBirthdate(e.target.value)}
+                        >
+                            {() => <Form.Control className="form-control-custom" placeholder="Дата рождения" />}
+                        </InputMask>
+                        <AddressSuggestions
+                            token="a1df019af69de6609bfeb129298ce86b0293bebe"
+                            value={address}
+                            onChange={(e) => setAddress(e.value)}
+                            inputProps={{ placeholder: "Address", className: "form-control-custom" }}
+                        />
+                        {userType === 'user' && (
+                            <>
+                                <InputMask
+                                    mask="999-999-999 99"
+                                    value={snils}
+                                    onChange={(e) => setSnils(e.target.value)}
+                                >
+                                    {() => <Form.Control className="form-control-custom" placeholder="SNILS" />}
+                                </InputMask>
+                                <Form.Control
+                                    className="form-control-custom"
+                                    placeholder="Polis"
+                                    value={polis}
+                                    onChange={(e) => setPolis(e.target.value)}
+                                />
+                            </>
+                        )}
+                        <Button className="mt-3 button-custom" variant="outline-primary" onClick={handleBack}>
+                            Назад
+                        </Button>
+                        <Button className="mt-3 button-custom" variant="outline-primary" onClick={handleNext}>
+                            Далее
+                        </Button>
+                        <Button className="mt-3 button-custom" variant="outline-secondary" onClick={() => setIsLogin(true)}>
+                            Войти
+                        </Button>
+                    </>
+                );
+            case 3:
+                return (
+                    <>
+                        <InputMask
+                            mask="9999 999999"
+                            value={passport}
+                            onChange={(e) => setPassport(e.target.value)}
+                        >
+                            {() => <Form.Control className="form-control-custom" placeholder="Паспорт" />}
+                        </InputMask>
+                        <Form.Control
+                            className="form-control-custom"
+                            placeholder="Возраст"
+                            value={age}
+                            onChange={(e) => setAge(e.target.value)}
+                        />
+                        {userType === 'doctor' && (
+                            <Form.Control
+                                as="select"
+                                className="form-control-custom"
+                                value={specialityId}
+                                onChange={(e) => setSpecialityId(e.target.value)}
+                            >
+                                <option value="">Выберите специальность</option>
+                                {specialities.map(speciality => (
+                                    <option key={speciality.specialityId} value={speciality.specialityId}>
+                                        {speciality.specialityName}
+                                    </option>
+                                ))}
+                            </Form.Control>
+                        )}
+                        <Button className="mt-3 button-custom" variant="outline-primary" onClick={handleBack}>
+                            Назад
+                        </Button>
+                        <Button className="mt-3 button-custom" variant="outline-success" onClick={handleRegistration}>
+                            Зарегистрироваться
+                        </Button>
+                        <Button className="mt-3 button-custom" variant="outline-secondary" onClick={() => setIsLogin(true)}>
+                            Войти
+                        </Button>
+                    </>
+                );
+            default:
+                return null;
+        }
+    };
+
     return (
         <Container
-            className="d-flex justify-content-center align-items-center mt-4"
+            className="d-flex justify-content-center align-items-center"
             style={{ height: window.innerHeight - 54 }}
         >
             <Card style={{ width: 600 }} className="p-5">
-                <h2 className="m-auto">{isLogin ? "Авторизация" : "Регистрация"}</h2>
-
-                <Form className="d-flex flex-column">
-                    {isLogin && (
-                        <>
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Введите login..."
-                                value={loginIdentifier}
-                                onChange={(e) => setLoginIdentifier(e.target.value)}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                type="password"
-                                placeholder="Введите ваш пароль..."
-                                value={loginPassword}
-                                onChange={(e) => setLoginPassword(e.target.value)}
-                            />
-                        </>
-                    )}
-
-                    {!isLogin && !isDoctorRegistration && (
-                        <>
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Имя"
-                                value={registrationIdentifier}
-                                onChange={(e) => setRegistrationIdentifier(e.target.value)}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                type="password"
-                                placeholder="Фамилия"
-                                value={registrationPassword}
-                                onChange={(e) => setRegistrationPassword(e.target.value)}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="?"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </>
-                    )}
-
-                    {/* Добавленная форма для регистрации врача */}
-                    {!isLogin && isDoctorRegistration && (
-                        <>
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Имя"
-                                value={docfirstName}
-                                onChange={(e) => setDocFirstname(e.target.value)}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Фамилия"
-                                value={docsecondName}
-                                onChange={(e) => setDocsecondName( e.target.value )}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Отчество"
-                                value={doclastName}
-                                onChange={(e) => setDoclastName(e.target.value )}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Login"
-                                value={docLogin}
-                                onChange={(e) => setDocLogin(e.target.value )}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                type="password"
-                                placeholder="Password"
-                                value={docPassword}
-                                onChange={(e) => setDocPassword(e.target.value )}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Email"
-                                value={docEmail}
-                                onChange={(e) => setDocEmail(e.target.value )}
-                            />
-
-                            <Form.Control
-                                className="mt-3"
-                                // type="date"
-                                placeholder="Birthdate"
-                                value={docBirthdate}
-                                onChange={(e) => setDocBirthdate(e.target.value )}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Address"
-                                value={docAddress}
-                                onChange={(e) => setDocAddress(e.target.value )}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="SNILS"
-                                value={docSnils}
-                                onChange={(e) => setDocSnils(e.target.value )}
-                            />
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Polis"
-                                value={docPolis}
-                                onChange={(e) => setDocPolis(e.target.value )}
-                            />
-
-
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Phone number"
-                                value={docphoneNumber}
-                                onChange={(e) => setDocphoneNumber(e.target.value )}
-                            />
-
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="Возраст"
-                                value={docAge}
-                                onChange={(e) => setDocAge(e.target.value )}
-                            />
-                                                        <Form.Control
-                                className="mt-3"
-                                placeholder="паспорт"
-                                value={docPassport}
-                                onChange={(e) => setDocPassport(e.target.value )}
-                            />
-
-                            <Form.Control
-                                className="mt-3"
-                                placeholder="специальность"
-                                value={docSpecialityId}
-                                onChange={(e) => setDocSpecialityId(e.target.value )}
-                            />
-
-
-
-                        </>
-                    )}
-
-                    <Row className="d-flex mt-3 justify-content-between mt-3 pl-3 pr-3">
-                        {isLogin ? (
-                            <div>
-                                Нет аккаунта?{" "}
-                                <NavLink to={REGISTRATION_ROUTE}>Зарегистрируйтесь!</NavLink>
-                            </div>
-                        ) : (
-                            <div>
-                                Есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войдите!</NavLink>
-                            </div>
-                        )}
-
-                        {/* Ссылка на регистрацию врача */}
-                        <div>
-                            Регистрация врача <NavLink to={DOCTORREGISTRATION_ROUTE} onClick={() => setIsDoctorRegistration(true)}>Здесь</NavLink>
-                        </div>
-
-                        <Button className="mt-3" variant={"outline-success"} onClick={click}>
-                            {isLogin ? "Войти" : "Регистрация"}
-                        </Button>
-                    </Row>
-                </Form>
+                {registrationSuccess ? (
+                    <div className="text-center">
+                        <h2>Регистрация успешна! Перенаправление на страницу входа...</h2>
+                    </div>
+                ) : (
+                    <>
+                        <h2 className="m-auto">{isLogin ? "Авторизация" : "Регистрация"}</h2>
+                        <Form className="d-flex flex-column">
+                            {isLogin ? renderLogin() : (
+                                <>
+                                    <div className="d-flex justify-content-around mb-3">
+                                        <Button
+                                            variant={userType === 'user' ? "outline-primary" : "outline-secondary"}
+                                            onClick={() => setUserType('user')}
+                                        >
+                                            Я пациент
+                                        </Button>
+                                        <Button
+                                            variant={userType === 'doctor' ? "outline-primary" : "outline-secondary"}
+                                            onClick={() => setUserType('doctor')}
+                                        >
+                                            Я врач
+                                        </Button>
+                                    </div>
+                                    {userType && renderStepContent()}
+                                </>
+                            )}
+                        </Form>
+                    </>
+                )}
             </Card>
         </Container>
     );

@@ -4,6 +4,9 @@ import Auth from "./pages/Auth";
 import Doc from "./pages/DocMain"
 import Recept from "./pages/doctorReceeptions"
 import PatinfoPage from "./pages/PatinfoPage";
+import userReceptions from "./pages/userReceptions";
+import userCabinet from "./pages/Cabinet";
+import docCabinet from "./pages/docCabinet";
 import {
   ADMIN_ROUTE,
   HOME_ROUTE,
@@ -13,6 +16,9 @@ import {
   DOC_ROUTE,
   DOCTORREGISTRATION_ROUTE,
   RECEPTIONS_DOC,
+  RECEPTIONS_USER,
+  CABINET_USER,
+  CABINET_DOC, 
   
 } from "./utils/consts";
 import { Component } from "react";
@@ -23,6 +29,15 @@ export const authRoutes = [
     path: PINFO_ROUTE ,
     Component: PatinfoPage,
   },
+  {
+    path: RECEPTIONS_USER,
+    Component: userReceptions,
+  },
+
+  {
+    path: CABINET_USER,
+    Component: userCabinet,
+  }
 
 ];
 export const adminRoutes = [
@@ -42,7 +57,13 @@ export const docRoutes = [
   {
     path: RECEPTIONS_DOC,
     Component: Recept,
+  },
+  
+  {
+    path: CABINET_DOC,
+    Component: docCabinet,
   }
+  
 
 ];
 

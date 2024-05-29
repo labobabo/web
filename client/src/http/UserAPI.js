@@ -5,17 +5,7 @@ import { Context } from "./index";
 
 export let Role = null;
 
-export const registration = async (identifier, password) => {
-  const { data } = await $host.post("auth/signup", {
-    identifier,
-    password,
-  });
-  localStorage.setItem("token", data.token);
-
-  return jwtDecode(data.token);
-};
-
-export const doctorregistration = async (firstName, secondName, lastName,  login, password, email, phoneNumber, birthdate, address, snils, polis, passport, age, specialityId) => {
+export const registration = async (firstName, secondName, lastName,  login, password, email, phoneNumber, birthdate, address, snils, polis, passport, age, specialityId) => {
   try {
     console.log("Параметры переданные в функцию:");
     console.log({
@@ -47,6 +37,48 @@ export const doctorregistration = async (firstName, secondName, lastName,  login
       address,
       snils,
       polis,
+      passport,
+      age,
+      specialityId,
+    });
+  
+    console.log("Результат запроса:");
+    console.log(data);
+  } catch (error) {
+    console.error("Произошла ошибка:");
+    console.error(error);
+  }
+};
+
+export const doctorregistration = async (firstName, secondName, lastName,  login, password, email, phoneNumber, birthdate, address, passport, age, specialityId) => {
+  try {
+    console.log("Параметры переданные в функцию:");
+    console.log({
+      firstName,
+      secondName,
+      lastName,
+      login,
+      password,
+      email,
+      phoneNumber,
+      birthdate,
+      address,
+
+      passport,
+      age,
+      specialityId,
+    });
+
+    const { data } = await $host.post("auth/doctor/signup", {
+      firstName,
+      secondName,
+      lastName,
+      login,
+      password,
+      email,
+      phoneNumber,
+      birthdate,
+      address,
       passport,
       age,
       specialityId,

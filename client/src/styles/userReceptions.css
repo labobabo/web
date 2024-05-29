@@ -1,0 +1,27 @@
+/* Изменение иконки кнопки закрытия модального окна на крестик */
+.close-button::after {
+    content: "\00D7"; /* Юникодный символ "×" (крестик) */
+    font-size: 1.5rem; /* Размер иконки */
+    line-height: 1; /* Выравнивание иконки */
+}
+.btn-purple {
+    background-color: #8a2be2; /* Фиолетовый цвет */
+    color: white; /* Цвет текста */
+    border-color: #8a2be2; /* Цвет рамки */
+}
+
+.btn-purple:hover {
+    background-color: #6a1b9a; /* Темно-фиолетовый цвет при наведении */
+    border-color: #6a1b9a; /* Цвет рамки при наведении */
+}
+
+.btn-purple:focus {
+    background-color: #8a2be2; /* Фиолетовый цвет при нажатии */
+    border-color: #8a2be2; /* Цвет рамки при нажатии */
+}
+.btn-size {
+    padding: 6px 12px; /* Уменьшаем отступы внутри кнопки */
+    font-size: 14px; /* Устанавливаем размер шрифта */
+    line-height: 1.5; /* Задаем высоту строки */
+    white-space: nowrap; /* Запрещаем перенос текста на новую строку */
+}

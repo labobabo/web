@@ -6,3 +6,6 @@ export const HOME_ROUTE = "/";
 export const PINFO_ROUTE = "/patinfo";
 export const DOC_ROUTE = "/doc";
 export const RECEPTIONS_DOC = "/docreceptions";
+export const RECEPTIONS_USER = "/userreceptions";
+export const CABINET_USER = "/usercabinet";
+export const CABINET_DOC = "/doccabinet";

@@ -4,22 +4,24 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faSignInAlt, faSignOutAlt, faUserCog, faUser, faClipboardList, faClinicMedical } from "@fortawesome/free-solid-svg-icons";
 import {
   ADMIN_ROUTE,
   LOGIN_ROUTE,
   HOME_ROUTE,
   PINFO_ROUTE,
   DOC_ROUTE,
+  RECEPTIONS_USER,
+  CABINET_USER,
+  CABINET_DOC,
 } from "../utils/consts";
 import { Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
-import { Role } from "../http/UserAPI";
 
 const NavBar = observer(() => {
-  const { user } = useContext(Context);
-  const { admin } = useContext(Context);
-  const { doctor } = useContext(Context);
+  const { user, admin, doctor } = useContext(Context);
   const navigate = useNavigate();
 
   const logOut = () => {
@@ -30,95 +32,117 @@ const NavBar = observer(() => {
     admin.setIsAuth(false);
     doctor.setIsAuth(false);
 
-    localStorage.removeItem("token", () => {
-      console.log("Токен удален");
-      // Код, который нужно выполнить после удаления токена
-    });
+    localStorage.removeItem("token");
+    console.log("Токен удален");
   };
 
   return (
-    <Navbar bg="dark" data-bs-theme="dark">
+    <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <NavLink style={{ color: "white" }} to={HOME_ROUTE}>
-          Пожуй пилюлю
-        </NavLink>
-
-        {admin.isAuth || user.isAuth || doctor.isAuth  ? (
-          <Nav className="ml-auto" style={{ color: "white" }}>
+        <Navbar.Brand as={NavLink} to={HOME_ROUTE} className="me-auto">
+          <FontAwesomeIcon icon={faClinicMedical} /> MedBonch
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto">
             {admin.isAuth && (
               <>
                 <Button
-                  variant={"outline-light"}
-                  onClick={() => navigate(ADMIN_ROUTE)}
+                  as={NavLink}
+                  to={ADMIN_ROUTE}
+                  variant="outline-light"
+                  className="me-2"
                 >
-                  Админ
+                  <FontAwesomeIcon icon={faUserCog} /> Админ
                 </Button>
                 <Button
-                  variant={"outline-light"}
-                  onClick={() => logOut()}
-                  className="ml-2"
+                  variant="outline-light"
+                  onClick={logOut}
+                  className="me-2"
                 >
-                  Выйти
+                  <FontAwesomeIcon icon={faSignOutAlt} /> Выйти
                 </Button>
               </>
             )}
             {user.isAuth && (
               <>
                 <Button
-                  variant={"outline-light"}
-                  onClick={() => navigate(PINFO_ROUTE)} // Здесь должен быть путь для пользователя
-                  className="ml-2"
+                  as={NavLink}
+                  to={PINFO_ROUTE}
+                  variant="outline-light"
+                  className="me-2"
                 >
-                  Пользователь
+                  <FontAwesomeIcon icon={faClipboardList} /> Записаться
                 </Button>
-
                 <Button
-                  variant={"outline-light"}
-                  onClick={() => logOut()}
-                  className="ml-2"
+                  as={NavLink}
+                  to={RECEPTIONS_USER}
+                  variant="outline-light"
+                  className="me-2"
                 >
-                  Выйти
+                  <FontAwesomeIcon icon={faClipboardList} /> Мои записи
                 </Button>
-
-
+                <Button
+                  as={NavLink}
+                  to={CABINET_USER}
+                  variant="outline-light"
+                  className="me-2"
+                >
+                  <FontAwesomeIcon icon={faUser} /> Кабинет
+                </Button>
+                <Button
+                  variant="outline-light"
+                  onClick={logOut}
+                  className="me-2"
+                >
+                  <FontAwesomeIcon icon={faSignOutAlt} /> Выйти
+                </Button>
               </>
             )}
             {doctor.isAuth && (
               <>
                 <Button
-                  variant={"outline-light"}
-                  onClick={() => navigate(DOC_ROUTE)} // Здесь должен быть путь для пользователя
-                  className="ml-2"
+                  as={NavLink}
+                  to={DOC_ROUTE}
+                  variant="outline-light"
+                  className="me-2"
                 >
-                  док
+                  <FontAwesomeIcon icon={faUserCog} /> Док
                 </Button>
 
                 <Button
-                  variant={"outline-light"}
-                  onClick={() => logOut()}
-                  className="ml-2"
+                  as={NavLink}
+                  to={CABINET_DOC}
+                  variant="outline-light"
+                  className="me-2"
                 >
-                  Выйти
+                  <FontAwesomeIcon icon={faUserCog} /> Кабинет
                 </Button>
 
-
+                <Button
+                  variant="outline-light"
+                  onClick={logOut}
+                  className="me-2"
+                >
+                  <FontAwesomeIcon icon={faSignOutAlt} /> Выйти
+                </Button>
               </>
             )}
+            {!admin.isAuth && !user.isAuth && !doctor.isAuth && (
+              <Button
+                as={NavLink}
+                to={LOGIN_ROUTE}
+                variant="outline-light"
+                className="me-2"
+              >
+                <FontAwesomeIcon icon={faSignInAlt} /> Авторизация
+              </Button>
+            )}
           </Nav>
-        ) : (
-          <Nav className="ml-auto" style={{ color: "white" }}>
-            <Button
-              variant={"outline-light"}
-              onClick={() => navigate(LOGIN_ROUTE)}
-            >
-              Авторизация
-            </Button>
-          </Nav>
-        )}
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );
-
 });
 
 export default NavBar;

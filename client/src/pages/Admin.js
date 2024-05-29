@@ -49,7 +49,7 @@ const Admin = () => {
 
     return (
         <div>
-            <h1>Doctors List</h1>
+            <h1>Подтверждение</h1>
             {doctors.map((doctor) => (
                 <div key={doctor.id} className="doctor-card">
                     <h2 className="doctor-name">{doctor.lastName} {doctor.firstName} {doctor.secondName}</h2>
