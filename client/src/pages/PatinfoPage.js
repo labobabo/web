@@ -74,6 +74,7 @@ const DocMain = () => {
     };
 
     return (
+        <Container className="main-content">
         <Container className="doc-main-container">
             <h1 className="doc-main-title">Запись к врачу</h1>
             <Form className="rounded-form">
@@ -155,6 +156,7 @@ const DocMain = () => {
                     Записаться на прием
                 </Button>
             </Form>
+        </Container>
         </Container>
     );
 };

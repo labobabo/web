@@ -1,0 +1,39 @@
+.custom-navbar {
+    background-color: #1E90FF; /* Синий фон */
+    color: #ffffff; /* Белый текст */
+    position: absolute; /* или position: relative; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* убедитесь, что z-index выше, чем у других элементов */
+  }
+  
+  .custom-brand {
+    display: flex;
+    align-items: center;
+    color: #ffffff; /* Белый текст */
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .custom-navbar .navbar-toggler {
+    border-color: #ffffff;
+  }
+  
+  .custom-button {
+    color: #ffffff;
+    font-size: 1rem;
+    border: none;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+  
+  .custom-button:hover {
+    color: #000000;
+    background-color: #ffffff;
+  }
+  
+  .custom-button .fa-icon {
+    margin-right: 5px;
+  }
+  

@@ -1,26 +1,88 @@
-.circle-icon {
-    position: relative;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: #007bff;
-    transition: transform 0.3s ease-in-out;
+body {
+    font-family: Arial, sans-serif;
 }
 
-.circle-icon:hover {
-    transform: scale(1.5) translateY(-20px);
+h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
 }
 
-.circular-menu {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
 }
 
-.mx-2 {
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+p {
+    font-size: 1rem;
+    margin-bottom: 20px;
 }
+
+.card {
+    border: none;
+    background-color: #f8f9fa;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.card-text {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 20px 0;
+}
+
+footer p {
+    margin: 0;
+}
+
+.carousel-item img {
+    height: 60vh;
+    object-fit: cover;
+}
+
+.container-fluid {
+    padding: 0;
+}
+
+.carousel {
+    margin-top: 80px; /* Отступ сверху для избегания наложения на хедер */
+}
+
+.container h1, .container p {
+    color: #333;
+}
+
+.container .row.mb-5 h2 {
+    color: #007bff;
+}
+.carousel-image {
+    object-fit: cover;
+    height: 500px; /* Вы можете изменить высоту по необходимости */
+}
+.bg-dark {
+    background-color: #0073e7 !important; /* Темный фон */
+  }
+  
+  .text-white {
+    color: #ffffff !important; /* Белый текст */
+  }
+  
+  .footer p {
+    margin-bottom: 0;
+  }
+  
+  .footer {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #343a40; /* Темный фон футера */
+    color: #ffffff; /* Белый текст в футере */
+    text-align: center;
+  }
+  

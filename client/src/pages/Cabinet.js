@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { $authHost } from "../http/index";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from 'react-bootstrap/Container';
+import '../styles/userCabinet.css'; // Убедитесь, что CSS файл создан и импортирован
 
 const Cabinet = () => {
     const [user, setUser] = useState({
-        name: "",
+        firstName: "",
         birthdate: "",
         phoneNumber: "",
         email: "",
@@ -24,7 +26,10 @@ const Cabinet = () => {
                 const response = await $authHost.get('user/getInfo');
                 const userInfo = response.data;
                 setUser({
-                    name: userInfo.name,
+                    firstName: userInfo.firstName,
+                    lastName: userInfo.lastName,
+                    secondName: userInfo.secondName,
+
                     birthdate: userInfo.birthdate,
                     phoneNumber: userInfo.phoneNumber,
                     email: userInfo.email,
@@ -39,7 +44,9 @@ const Cabinet = () => {
             }
         };
 
-        fetchUserInfo();
+        const interval = setInterval(fetchUserInfo, 3000); // Вызов функции fetchUserInfo() каждые 3 секунды
+
+        return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
     }, []);
 
     const handleFileSelect = (event) => {
@@ -69,6 +76,7 @@ const Cabinet = () => {
     
 
     return (
+        <Container className="main-content">
         <div className="container mt-5">
             <div className="row mb-4">
                 <div className="col-md-4 text-center">
@@ -88,7 +96,7 @@ const Cabinet = () => {
                     <button onClick={handlePhotoUpload} className="btn btn-primary mt-2">Загрузить фото</button>
                 </div>
                 <div className="col-md-8">
-                    <h2>{user.name}</h2>
+                    <h1>{user.lastName} {user.firstName} {user.secondName}</h1>
                     <p>Дата рождения: {user.birthdate}</p>
                 </div>
             </div>
@@ -122,6 +130,7 @@ const Cabinet = () => {
                 </div>
             </div>
         </div>
+        </Container>
     );
 };
 

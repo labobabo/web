@@ -1,110 +1,113 @@
 import React from "react";
-import { Container, Row, Col, Carousel, Card } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVk, faTelegram, faFacebook } from "@fortawesome/free-brands-svg-icons";
-import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { Container, Row, Col, Button, Card, Carousel } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Home.css'; // Убедитесь, что CSS файл создан и импортирован
 
 const Home = () => {
     return (
-        <div className="bg-light" style={{ minHeight: "100vh" }}>
-            <Container className="py-5">
+        <div className="d-flex flex-column min-vh-100">
+            <Container fluid className="p-0 mt-5"> {/* Добавляем отступ сверху */}
                 <Row className="justify-content-center">
-                    <Col xs={12}>
-                        <Carousel>
+                    <Col xs={12} md={10} className="mb-5"> {/* Ограничиваем ширину до 10 колонок на больших экранах */}
+                        <Carousel className="mb-5">
                             <Carousel.Item>
                                 <img
                                     className="d-block w-100"
                                     src="/photos/1d.jpg"
-                                    alt="First slide"
+                                    alt="Первый слайд"
+                                    style={{ objectFit: 'cover', height: '900px' }} // Настройка стиля для предотвращения обрезки
                                 />
+                                <Carousel.Caption>
+                                    <h3>Первый слайд</h3>
+                                    <p>Описание первого слайда.</p>
+                                </Carousel.Caption>
                             </Carousel.Item>
                             <Carousel.Item>
                                 <img
                                     className="d-block w-100"
-                                    src="/photos/2d.jpg"
-                                    alt="Second slide"
+                                    src="/photos/docmem.jpg"
+                                    alt="Второй слайд"
+                                    style={{ objectFit: 'cover', height: '900px' }} // Настройка стиля для предотвращения обрезки
                                 />
+                                <Carousel.Caption>
+                                    <h3>Второй слайд</h3>
+                                    <p>Описание второго слайда.</p>
+                                </Carousel.Caption>
                             </Carousel.Item>
                         </Carousel>
                     </Col>
                 </Row>
-                <Row className="mt-5">
-                    <Col>
-                        <h2 className="text-center">Наши предложения</h2>
+            </Container>
+            <Container className="flex-grow-1 py-5">
+                <Row className="justify-content-center mb-4">
+                    <Col xs={12} md={8} className="text-center">
+                        <h1>Новоялександровская районная больница</h1>
+                        <p>Взрослая регистратура: 8 86564 617-68, Детская регистратура: 8 86564 613-75</p>
+                        <p>Горячая линия МЗ СК: 8-800-200-26-03</p>
+                        <Button variant="primary" className="m-2">График работы</Button>
+                        <Button variant="primary" className="m-2">Обращение</Button>
                     </Col>
                 </Row>
-                <Row className="mt-4 justify-content-center">
-                    <Col xs={12} md={6} lg={3} className="mb-4">
-                        <Card className="h-100 border-primary">
+                <Row className="justify-content-center mb-5">
+                    <Col xs={6} md={3} className="text-center">
+                        <h2>1988</h2>
+                        <p>Новорожденных за год</p>
+                    </Col>
+                    <Col xs={6} md={3} className="text-center">
+                        <h2>51953</h2>
+                        <p>Посещений врачей за год</p>
+                    </Col>
+                    <Col xs={6} md={3} className="text-center">
+                        <h2>4752</h2>
+                        <p>Поступило в стационар за год</p>
+                    </Col>
+                    <Col xs={6} md={3} className="text-center">
+                        <h2>53</h2>
+                        <p>Года опыта работы</p>
+                    </Col>
+                </Row>
+                <Row className="justify-content-center">
+                    <Col xs={12} md={4} className="mb-4">
+                        <Card className="h-100 text-center">
                             <Card.Body>
-                                <Card.Title className="text-primary">Рабочее время</Card.Title>
+                                <Card.Title>Гинекология</Card.Title>
                                 <Card.Text>
-                                    Будние: 8:00 - 18:00 <br />
-                                    Выходные: 10:00 - 16:00
+                                    Профилактика, диагностика и лечение заболеваний женской половой системы.
                                 </Card.Text>
+                                <Button variant="primary">Подробнее</Button>
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col xs={12} md={6} lg={3} className="mb-4">
-                        <Card className="h-100 border-success">
+                    <Col xs={12} md={4} className="mb-4">
+                        <Card className="h-100 text-center">
                             <Card.Body>
-                                <Card.Title className="text-success">Расписание врачей</Card.Title>
+                                <Card.Title>Урология</Card.Title>
                                 <Card.Text>
-                                    Понедельник: Доктор Иванова, 9:00 - 15:00 <br />
-                                    Вторник: Доктор Петров, 10:00 - 16:00 <br />
-                                    Среда: Доктор Сидорова, 8:00 - 14:00 <br />
-                                    Четверг: Доктор Козлов, 11:00 - 17:00 <br />
-                                    Пятница: Доктор Михайлова, 12:00 - 18:00
+                                    Диагностика, лечение и профилактика заболеваний мочевыделительной системы мужчин и женщин.
                                 </Card.Text>
+                                <Button variant="primary">Подробнее</Button>
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col xs={12} md={6} lg={3} className="mb-4">
-                        <Card className="h-100 border-warning">
+                    <Col xs={12} md={4} className="mb-4">
+                        <Card className="h-100 text-center">
                             <Card.Body>
-                                <Card.Title className="text-warning">Контактный номер</Card.Title>
+                                <Card.Title>Гастроэнтерология</Card.Title>
                                 <Card.Text>
-                                    +7 (123) 456-7890
+                                    Диагностика, лечение и профилактика заболеваний пищеварительных органов.
                                 </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col xs={12} md={6} lg={3} className="mb-4">
-                        <Card className="h-100 border-info">
-                            <Card.Body>
-                                <Card.Title className="text-info">Описание</Card.Title>
-                                <Card.Text>
-                                    Мы, за ваше здоровье стоим, кто у нас был тот в курсе.
-                                </Card.Text>
+                                <Button variant="primary">Подробнее</Button>
                             </Card.Body>
                         </Card>
                     </Col>
                 </Row>
             </Container>
-            <div className="circular-menu d-flex justify-content-center mt-4">
-                <div className="circle-icon mx-2">
-                    <a href="https://vk.com" target="_blank" rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faVk} size="2x" className="text-white" />
-                    </a>
-                </div>
-                <div className="circle-icon mx-2">
-                    <a href="https://telegram.org" target="_blank" rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faTelegram} size="2x" className="text-white" />
-                    </a>
-                </div>
-                <div className="circle-icon mx-2">
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faFacebook} size="2x" className="text-white" />
-                    </a>
-                </div>
-                <div className="circle-icon mx-2">
-                    <a href="/path/to/app/download" target="_blank" rel="noopener noreferrer">
-                        <FontAwesomeIcon icon={faDownload} size="2x" className="text-white" />
-                    </a>
-                </div>
-            </div>
+            <footer className="bg-dark text-white text-center py-3 mt-auto">
+                <Container>
+                    <p className="mb-0">Добро пожаловать в Новоялександровскую районную больницу</p>
+                    <p className="mb-0">Наши медицинские специалисты заботятся о вашем здоровье и здоровье вашей семьи</p>
+                </Container>
+            </footer>
         </div>
     );
 };

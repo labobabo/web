@@ -114,6 +114,7 @@ const DoctorReceptions = () => {
     };
 
     return (
+        <Container className="main-content">
         <Container className="doc-rec-container">
             <h1 className="form-title">Записи</h1>
             {notification.show && (
@@ -184,6 +185,7 @@ const DoctorReceptions = () => {
                     </Form>
                 </Modal.Body>
             </Modal>
+        </Container>
         </Container>
     );
 };

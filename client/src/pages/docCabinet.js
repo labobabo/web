@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { $authHost } from "../http/index";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container } from "react-bootstrap";
 
 const DocCabinet = () => {
     const [doctor, setDoctor] = useState({
@@ -23,7 +24,7 @@ const DocCabinet = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const fetchDoctorInfo = async () => {
+        const fetchData = async () => {
             try {
                 const response = await $authHost.get('doctor/getInfo');
                 const doctorInfo = response.data;
@@ -49,7 +50,9 @@ const DocCabinet = () => {
             }
         };
 
-        fetchDoctorInfo();
+        const interval = setInterval(fetchData, 3000); // Обновление данных каждые 3 секунды
+
+        return () => clearInterval(interval); // Очистка интервала при размонтировании компонента
     }, []);
 
     const handleFileSelect = (event) => {
@@ -92,75 +95,78 @@ const DocCabinet = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <div className="row mb-4">
-                <div className="col-md-4 text-center">
-                    {loading ? (
-                        <div className="spinner-border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                    ) : (
-                        <img
-                            src={photo || "default_photo_path"}  // Provide a default photo path if none is provided
-                            alt="Doctor"
-                            className="img-thumbnail"
-                            style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-                        />
-                    )}
-                    <input type="file" accept="image/*" onChange={handleFileSelect} className="form-control mt-2" />
-                    <button onClick={handlePhotoUpload} className="btn btn-primary mt-2">Загрузить фото</button>
-                </div>
-                <div className="col-md-8">
-                    <h2>{`${doctor.firstName} ${doctor.secondName} ${doctor.lastName}`}</h2>
-                    <p>Дата рождения: {doctor.birthdate}</p>
-                    <p>Возраст: {doctor.age}</p>
-                    <div className="d-flex align-items-center">
-                        <span className="me-2">Средний рейтинг:</span>
+        <Container className="main-content">
+            <div className="container mt-5">
+                <div className="row mb-4">
+                    <div className="col-md-4 text-center">
+                        {loading ? (
+                            <div className="spinner-border" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        ) : (
+                            <img
+                                src={photo || "default_photo_path"}
+                                alt="Doctor"
+                                className="img-thumbnail"
+                                style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+                            />
+                        )}
+                        <input type="file" accept="image/*" onChange={handleFileSelect} className="form-control mt-2" />
+                        <button onClick={handlePhotoUpload} className="btn btn-primary mt-2">Загрузить фото</button>
+                    </div>
+                    <div className="col-md-8">
+                        <h2>{`${doctor.firstName} ${doctor.secondName} ${doctor.lastName}`}</h2>
+                        <p>Дата рождения: {doctor.birthdate}</p>
+                        <p>Возраст: {doctor.age}</p>
                         <div className="d-flex align-items-center">
-                            {renderRatingHearts(doctor.averageRating)}
+                            <span className="me-2">Средний рейтинг:</span>
+                            <div className="d-flex align-items-center">
+                                {renderRatingHearts(doctor.averageRating)}
+                            </div>
+                            <span className="ms-2">({doctor.averageRating})</span>
                         </div>
-                        <span className="ms-2">({doctor.averageRating})</span>
+                    </div>
+                </div>
+                <div className="card mb-4">
+                    <div className="card-header">
+                        Контактные данные
+                    </div>
+                    <div className="card-body">
+                        <p>Номер телефона: {doctor.phoneNumber}</p>
+                        <p>Почта: {doctor.email}</p>
+                        <p>Адрес: {doctor.address}</p>
+                    </div>
+                </div>
+                <div className="card mb-4">
+                    <div className="card-header">
+                        Документы
+                    </div>
+                    <div className="card-body">
+                        <p>Паспорт: {doctor.passport}</p>
+                    </div>
+                </div>
+                <div className="card mb-4">
+                    <div className="card-header">
+                        Профессиональные данные
+                    </div>
+                    <div className="card-body">
+                        <p>Специальность ID: {doctor.specialityId}</p>
+                        <p>Кабинет ID: {doctor.cabinetId}</p>
+                    </div>
+                </div>
+                <div className="card mb-4">
+                    <div className="card-header">
+                        Безопасность
+                    </div>
+                    <div className="card-body">
+                        <button className="btn btn-primary me-2">Изменить пароль</button>
+                        <button className="btn btn-secondary">Двухфакторная аутентификация</button>
                     </div>
                 </div>
             </div>
-            <div className="card mb-4">
-                <div className="card-header">
-                    Контактные данные
-                </div>
-                <div className="card-body">
-                    <p>Номер телефона: {doctor.phoneNumber}</p>
-                    <p>Почта: {doctor.email}</p>
-                    <p>Адрес: {doctor.address}</p>
-                </div>
-            </div>
-            <div className="card mb-4">
-                <div className="card-header">
-                    Документы
-                </div>
-                <div className="card-body">
-                    <p>Паспорт: {doctor.passport}</p>
-                </div>
-            </div>
-            <div className="card mb-4">
-                <div className="card-header">
-                    Профессиональные данные
-                </div>
-                <div className="card-body">
-                    <p>Специальность ID: {doctor.specialityId}</p>
-                    <p>Кабинет ID: {doctor.cabinetId}</p>
-                </div>
-            </div>
-            <div className="card mb-4">
-                <div className="card-header">
-                    Безопасность
-                </div>
-                <div className="card-body">
-                    <button className="btn btn-primary me-2">Изменить пароль</button>
-                    <button className="btn btn-secondary">Двухфакторная аутентификация</button>
-                </div>
-            </div>
-        </div>
+        </Container>
     );
 };
 
 export default DocCabinet;
+

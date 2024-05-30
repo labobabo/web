@@ -25,7 +25,7 @@ export const registration = async (firstName, secondName, lastName,  login, pass
       specialityId,
     });
 
-    const { data } = await $host.post("auth/doctor/signup", {
+    const { data } = await $host.post("auth/signup", {
       firstName,
       secondName,
       lastName,

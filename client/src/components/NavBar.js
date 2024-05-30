@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faSignInAlt, faSignOutAlt, faUserCog, faUser, faClipboardList, faClinicMedical } from "@fortawesome/free-solid-svg-icons";
+import { faSignInAlt, faSignOutAlt, faUserCog, faUser, faClipboardList, faClinicMedical } from "@fortawesome/free-solid-svg-icons";
 import {
   ADMIN_ROUTE,
   LOGIN_ROUTE,
@@ -19,6 +19,7 @@ import {
 import { Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
+import '../styles/NavBar.css'; // импортируем CSS файл
 
 const NavBar = observer(() => {
   const { user, admin, doctor } = useContext(Context);
@@ -37,10 +38,10 @@ const NavBar = observer(() => {
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar expand="lg" className="custom-navbar fixed-top">
       <Container>
-        <Navbar.Brand as={NavLink} to={HOME_ROUTE} className="me-auto">
-          <FontAwesomeIcon icon={faClinicMedical} /> MedBonch
+        <Navbar.Brand as={NavLink} to={HOME_ROUTE} className="custom-brand">
+          <FontAwesomeIcon icon={faClinicMedical} className="me-2" /> MedBonch
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -51,14 +52,14 @@ const NavBar = observer(() => {
                   as={NavLink}
                   to={ADMIN_ROUTE}
                   variant="outline-light"
-                  className="me-2"
+                  className="me-2 custom-button"
                 >
                   <FontAwesomeIcon icon={faUserCog} /> Админ
                 </Button>
                 <Button
                   variant="outline-light"
                   onClick={logOut}
-                  className="me-2"
+                  className="me-2 custom-button"
                 >
                   <FontAwesomeIcon icon={faSignOutAlt} /> Выйти
                 </Button>
@@ -70,7 +71,7 @@ const NavBar = observer(() => {
                   as={NavLink}
                   to={PINFO_ROUTE}
                   variant="outline-light"
-                  className="me-2"
+                  className="me-2 custom-button"
                 >
                   <FontAwesomeIcon icon={faClipboardList} /> Записаться
                 </Button>
@@ -78,7 +79,7 @@ const NavBar = observer(() => {
                   as={NavLink}
                   to={RECEPTIONS_USER}
                   variant="outline-light"
-                  className="me-2"
+                  className="me-2 custom-button"
                 >
                   <FontAwesomeIcon icon={faClipboardList} /> Мои записи
                 </Button>
@@ -86,14 +87,14 @@ const NavBar = observer(() => {
                   as={NavLink}
                   to={CABINET_USER}
                   variant="outline-light"
-                  className="me-2"
+                  className="me-2 custom-button"
                 >
                   <FontAwesomeIcon icon={faUser} /> Кабинет
                 </Button>
                 <Button
                   variant="outline-light"
                   onClick={logOut}
-                  className="me-2"
+                  className="me-2 custom-button"
                 >
                   <FontAwesomeIcon icon={faSignOutAlt} /> Выйти
                 </Button>
@@ -105,7 +106,7 @@ const NavBar = observer(() => {
                   as={NavLink}
                   to={DOC_ROUTE}
                   variant="outline-light"
-                  className="me-2"
+                  className="me-2 custom-button"
                 >
                   <FontAwesomeIcon icon={faUserCog} /> Док
                 </Button>
@@ -114,7 +115,7 @@ const NavBar = observer(() => {
                   as={NavLink}
                   to={CABINET_DOC}
                   variant="outline-light"
-                  className="me-2"
+                  className="me-2 custom-button"
                 >
                   <FontAwesomeIcon icon={faUserCog} /> Кабинет
                 </Button>
@@ -122,7 +123,7 @@ const NavBar = observer(() => {
                 <Button
                   variant="outline-light"
                   onClick={logOut}
-                  className="me-2"
+                  className="me-2 custom-button"
                 >
                   <FontAwesomeIcon icon={faSignOutAlt} /> Выйти
                 </Button>
@@ -133,7 +134,7 @@ const NavBar = observer(() => {
                 as={NavLink}
                 to={LOGIN_ROUTE}
                 variant="outline-light"
-                className="me-2"
+                className="me-2 custom-button"
               >
                 <FontAwesomeIcon icon={faSignInAlt} /> Авторизация
               </Button>

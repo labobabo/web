@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import InputMask from "react-input-mask";
 import { AddressSuggestions } from 'react-dadata';
 import "react-dadata/dist/react-dadata.css";
-import "../styles/Auth.css"; // Import the custom CSS
+import "../styles/Auth.css";
 
 import { Context } from "../index";
 import { registration, login, doctorregistration } from "../http/UserAPI";
@@ -34,7 +34,7 @@ const Auth = observer(() => {
     const [birthdate, setBirthdate] = useState("");
     const [address, setAddress] = useState("");
     const [snils, setSnils] = useState("");
-    const [polis, setPolis] = useState("");
+    const [polis, setPolis] = useState(""); // New state for insurance policy
     const [age, setAge] = useState("");
     const [passport, setPassport] = useState("");
     const [specialityId, setSpecialityId] = useState("");
@@ -65,10 +65,10 @@ const Auth = observer(() => {
                     phoneNumber, birthdate, address, snils, polis, passport, age
                 );
             }
-            setRegistrationSuccess(true);  // Устанавливаем состояние успешной регистрации
+            setRegistrationSuccess(true);
             setTimeout(() => {
-                navigate(LOGIN_ROUTE);  // Перенаправление на страницу входа через 2 секунды
-                window.location.reload();  // Обновление страницы после перенаправления
+                navigate(LOGIN_ROUTE);
+                window.location.reload();
             }, 2000);
         } catch (error) {
             alert(error);
@@ -180,7 +180,7 @@ const Auth = observer(() => {
                             token="a1df019af69de6609bfeb129298ce86b0293bebe"
                             value={address}
                             onChange={(e) => setAddress(e.value)}
-                            inputProps={{ placeholder: "Address", className: "form-control-custom" }}
+                            inputProps={{ placeholder: "Адрес", className: "form-control-custom" }}
                         />
                         {userType === 'user' && (
                             <>
@@ -189,14 +189,15 @@ const Auth = observer(() => {
                                     value={snils}
                                     onChange={(e) => setSnils(e.target.value)}
                                 >
-                                    {() => <Form.Control className="form-control-custom" placeholder="SNILS" />}
+                                    {() => <Form.Control className="form-control-custom" placeholder="СНИЛС" />}
                                 </InputMask>
-                                <Form.Control
-                                    className="form-control-custom"
-                                    placeholder="Polis"
+                                <InputMask
+                                    mask="9999999999999999"
                                     value={polis}
                                     onChange={(e) => setPolis(e.target.value)}
-                                />
+                                >
+                                    {() => <Form.Control className="form-control-custom" placeholder="Полис" />}
+                                </InputMask>
                             </>
                         )}
                         <Button className="mt-3 button-custom" variant="outline-primary" onClick={handleBack}>
