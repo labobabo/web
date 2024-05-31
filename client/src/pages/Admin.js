@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { $authHost, $host } from "../http/index";
-import axios from "axios";
-import "../styles/admin.css"; // Импортируем файл со стилями
+import { $authHost } from "../http/index";
+import "../styles/admin.css"; // Import the CSS file
+import { Container } from "react-bootstrap";
 
 const Admin = () => {
     const [doctors, setDoctors] = useState([]);
@@ -10,9 +10,9 @@ const Admin = () => {
     useEffect(() => {
         const intervalId = setInterval(() => {
             fetchDoctors();
-        }, 2000); // Обновляем данные каждые 5 секунд
+        }, 2000); // Refresh data every 2 seconds
 
-        return () => clearInterval(intervalId); // Очищаем интервал при размонтировании компонента
+        return () => clearInterval(intervalId); // Clear interval on component unmount
     }, []);
 
     const fetchDoctors = async () => {
@@ -26,10 +26,9 @@ const Admin = () => {
 
     const sendRequest = async (doctorId) => {
         try {
-            const requestData = { doctorId };
             const response = await $authHost.put(`admin/confirmTheDoctor?doctorId=${doctorId}`);
             console.log("Request sent successfully:", response.data);
-            fetchDoctors(); // Обновляем список врачей после подтверждения
+            fetchDoctors(); // Refresh the doctors list after confirmation
         } catch (error) {
             console.error("Error sending request:", error);
         }
@@ -48,35 +47,39 @@ const Admin = () => {
     };
 
     return (
-        <div>
+        <Container className="main-content"> 
+        <div className="admin-container">
             <h1>Подтверждение</h1>
-            {doctors.map((doctor) => (
-                <div key={doctor.id} className="doctor-card">
-                    <h2 className="doctor-name">{doctor.lastName} {doctor.firstName} {doctor.secondName}</h2>
-                    <p className="doctor-contact"><strong>Phone:</strong> {doctor.phoneNumber}</p>
-                    <p className="doctor-contact"><strong>Cabinet:</strong> {doctor.cabinetId}</p>
-                    {!doctor.confirmed && (
-                        <div>
-                            <button className="confirm-button" onClick={() => handleConfirm(doctor.id)}>Подтвердить</button>
-                            <button className="reject-button" onClick={() => handleReject(doctor.id)}>Отклонить</button>
-                        </div>
-                    )}
-                    {doctor.confirmed && (
-                        <button className="details-button" onClick={() => toggleDetails(doctor)}>
-                            Подробнее
-                        </button>
-                    )}
-                    {selectedDoctor && selectedDoctor.id === doctor.id && (
-                        <div>
-                            <p><strong>Имя:</strong> {selectedDoctor.firstName}</p>
-                            <p><strong>Фамилия:</strong> {selectedDoctor.lastName}</p>
-                            <p><strong>Отчество:</strong> {selectedDoctor.secondName}</p>
-                            {/* Добавьте остальную информацию о враче */}
-                        </div>
-                    )}
-                </div>
-            ))}
+            <div className="doctor-list">
+                {doctors.map((doctor) => (
+                    <div key={doctor.id} className="doctor-card">
+                        <h2 className="doctor-name">{doctor.lastName} {doctor.firstName} {doctor.secondName}</h2>
+                        <p className="doctor-contact"><strong>Телефон:</strong> {doctor.phoneNumber}</p>
+                        <p className="doctor-contact"><strong>Кабинет:</strong> {doctor.cabinetId}</p>
+                        {!doctor.confirmed && (
+                            <div className="button-group">
+                                <button className="confirm-button" onClick={() => handleConfirm(doctor.id)}>Подтвердить</button>
+                                <button className="reject-button" onClick={() => handleReject(doctor.id)}>Отклонить</button>
+                            </div>
+                        )}
+                        {doctor.confirmed && (
+                            <button className="details-button" onClick={() => toggleDetails(doctor)}>
+                                Подробнее
+                            </button>
+                        )}
+                        {selectedDoctor && selectedDoctor.id === doctor.id && (
+                            <div className="doctor-details">
+                                <p><strong>Имя:</strong> {selectedDoctor.firstName}</p>
+                                <p><strong>Фамилия:</strong> {selectedDoctor.lastName}</p>
+                                <p><strong>Отчество:</strong> {selectedDoctor.secondName}</p>
+                                {/* Add more doctor information here */}
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
         </div>
+        </Container>
     );
 };
 
