@@ -1,0 +1,33 @@
+/* reviews.css */
+
+.main-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #333;
+}
+
+.review-date {
+    font-size: 0.875rem;
+    color: #777;
+    margin-top: 10px;
+}
+
+.text-danger {
+    color: red;
+}

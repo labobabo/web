@@ -9,3 +9,4 @@ export const RECEPTIONS_DOC = "/docreceptions";
 export const RECEPTIONS_USER = "/userreceptions";
 export const CABINET_USER = "/usercabinet";
 export const CABINET_DOC = "/doccabinet";
+export const USER_O = "/usero";

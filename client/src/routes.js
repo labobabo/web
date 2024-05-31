@@ -7,6 +7,7 @@ import PatinfoPage from "./pages/PatinfoPage";
 import userReceptions from "./pages/userReceptions";
 import userCabinet from "./pages/Cabinet";
 import docCabinet from "./pages/docCabinet";
+import usero from "./pages/userO";
 import {
   ADMIN_ROUTE,
   HOME_ROUTE,
@@ -19,6 +20,7 @@ import {
   RECEPTIONS_USER,
   CABINET_USER,
   CABINET_DOC, 
+  USER_O,
   
 } from "./utils/consts";
 import { Component } from "react";
@@ -37,6 +39,10 @@ export const authRoutes = [
   {
     path: CABINET_USER,
     Component: userCabinet,
+  },
+  {
+    path: USER_O,
+    Component: usero,
   }
 
 ];
